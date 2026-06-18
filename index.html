@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeWalk Perú - Características Android</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background: #121620;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      /* SMARTPHONE VIEWPORT (Google Pixel / Material 3 Style) */
+      .phone-android {
+        width: 390px;
+        height: 844px;
+        background: #fdfbff;
+        border-radius: 36px; 
+        overflow: hidden;
+        box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border: 10px solid #2c2f38;
+      }
+
+      /* ANDROID STATUS BAR NATIVA */
+      .android-status-bar {
+        background: #fdfbff;
+        height: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #1a1c1e;
+        z-index: 15;
+      }
+      .status-bar-icons {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      /* TOP APP BAR (MATERIAL DESIGN 3) */
+      .top-app-bar {
+        background: #fdfbff;
+        color: #1a1c1e;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+        border-bottom: 1px solid #e2e2e6;
+      }
+
+      .app-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .app-bar-left i {
+        font-size: 20px;
+        color: #43474e;
+      }
+
+      .top-app-bar h2 {
+        font-size: 20px;
+        font-weight: 500;
+        color: #1a1c1e;
+      }
+
+      .app-bar-icons {
+        display: flex;
+        gap: 20px;
+        color: #43474e;
+        font-size: 18px;
+      }
+
+      /* CONTENEDOR DE PANTALLAS */
+      .screen-container {
+        flex: 1;
+        position: relative;
+        overflow-y: auto;
+        padding-bottom: 95px; 
+        background: #fdfbff;
+      }
+
+      .screen {
+        display: none;
+        animation: m3Animate 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      @keyframes m3Animate {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      /* INTERRUPTORES DE PESTAÑAS CSS */
+      #m3-tab-map:checked ~ .screen-container .screen-map,
+      #m3-tab-routes:checked ~ .screen-container .screen-routes,
+      #m3-tab-alerts:checked ~ .screen-container .screen-alerts,
+      #m3-tab-profile:checked ~ .screen-container .screen-profile {
+        display: block;
+      }
+
+      /* El botón de pánico se oculta en el perfil para dejar espacio al formulario */
+      #m3-tab-profile:checked ~ .extended-fab {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      /* RESALTADO EN EL NAVIGATION BAR DE PILL INDICATION */
+      #m3-tab-map:checked ~ nav .item-map .pill-indicator,
+      #m3-tab-routes:checked ~ nav .item-routes .pill-indicator,
+      #m3-tab-alerts:checked ~ nav .item-alerts .pill-indicator,
+      #m3-tab-profile:checked ~ nav .item-profile .pill-indicator {
+        background: #cce3ff;
+        color: #001d3d;
+      }
+
+      #m3-tab-map:checked ~ nav .item-map,
+      #m3-tab-routes:checked ~ nav .item-routes,
+      #m3-tab-alerts:checked ~ nav .item-alerts,
+      #m3-tab-profile:checked ~ nav .item-profile {
+        color: #1a1c1e;
+        font-weight: 700;
+      }
+
+      /* EXTENDED FAB (BOTÓN DE PÁNICO M3) */
+      .extended-fab {
+        position: absolute;
+        bottom: 96px;
+        right: 16px;
+        background: #ffdad9;
+        color: #410002;
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        z-index: 30;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      /* --- COMPONENTES DE EXPLICACIÓN DE LA APLICACIÓN --- */
+      .app-intro-card {
+        background: #005faf;
+        color: white;
+        margin: 16px;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 95, 175, 0.2);
+      }
+      .app-intro-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .app-intro-card p {
+        font-size: 13px;
+        opacity: 0.9;
+        line-height: 1.5;
+      }
+
+      .m3-search-bar {
+        margin: 0 16px 16px 16px;
+        background: #f0f3fa;
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        height: 52px;
+        gap: 12px;
+      }
+      .m3-search-bar input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 100%;
+        font-size: 15px;
+        color: #1a1c1e;
+      }
+
+      .m3-map {
+        height: 180px;
+        background: url("https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200") center/cover;
+        position: relative;
+        margin: 0 16px;
+        border-radius: 12px;
+      }
+      .m3-heat {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(24px);
+      }
+      .m3-danger { width: 90px; height: 90px; background: rgba(224, 40, 40, 0.55); top: 40px; left: 120px; }
+
+      .m3-card {
+        background: #f3f4f9; 
+        margin: 16px;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid #e1e2ec;
+      }
+
+      .m3-card h3 {
+        font-size: 16px;
+        color: #1a1c1e;
+        margin-bottom: 6px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .m3-card h3 i {
+        color: #005faf;
+      }
+
+      .m3-card p {
+        font-size: 13px;
+        color: #43474e;
+        line-height: 1.5;
+      }
+
+      .m3-header {
+        padding: 24px 16px 8px 16px;
+        font-size: 24px;
+        color: #1a1c1e;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .m3-input-field {
+        width: calc(100% - 32px);
+        margin: 0 16px 16px 16px;
+        padding: 16px;
+        background: transparent;
+        border: 1px solid #74777f;
+        border-radius: 4px; /* Text field con bordes sutiles nativo de Android M3 */
+        outline: none;
+        font-size: 15px;
+        color: #1a1c1e;
+      }
+      .m3-input-field:focus {
+        border: 2px solid #005faf;
+      }
+
+      /* BOTÓN REDONDEADO EN ÓVALO (M3 Button) */
+      .m3-btn {
+        width: calc(100% - 32px);
+        margin: 8px 16px;
+        background: #005faf;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      /* Botón de texto plano secundario */
+      .m3-btn-text {
+        background: transparent;
+        color: #005faf;
+        border: none;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 12px;
+        cursor: pointer;
+      }
+
+      /* NAVIGATION BAR */
+      nav {
+        position: absolute;
+        bottom: 12px; 
+        left: 0;
+        width: 100%;
+        height: 72px;
+        background: #f3f4f9; 
+        border-top: 1px solid #e1e2ec;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 20;
+      }
+
+      .m3-nav-tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #43474e;
+        font-size: 11px;
+        cursor: pointer;
+        width: 25%;
+        gap: 2px;
+      }
+
+      .pill-indicator {
+        padding: 4px 22px;
+        border-radius: 16px;
+        transition: background 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .m3-nav-tab i {
+        font-size: 16px;
+      }
+
+      /* BARRA DE GESTOS */
+      .android-gesture-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        background: #f3f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 25;
+      }
+      .gesture-pill {
+        width: 108px;
+        height: 4px;
+        background: #1a1c1e;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="phone-android">
+      
+      <input type="radio" name="android-tab" id="m3-tab-map" checked />
+      <input type="radio" name="android-tab" id="m3-tab-routes" />
+      <input type="radio" name="android-tab" id="m3-tab-alerts" />
+      <input type="radio" name="android-tab" id="m3-tab-profile" />
+
+      <div class="android-status-bar">
+        <span>12:30</span>
+        <div class="status-bar-icons">
+          <i class="fa-solid fa-signal"></i>
+          <i class="fa-solid fa-wifi"></i>
+          <i class="fa-solid fa-battery-three-quarters"></i>
+        </div>
+      </div>
+
+      <header class="top-app-bar">
+        <div class="app-bar-left">
+          <i class="fa-solid fa-bars"></i>
+          <h2>SafeWalk Perú</h2>
+        </div>
+        <div class="app-bar-icons">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+      </header>
+
+      <button class="extended-fab">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>PÁNICO</span>
+      </button>
+
+      <main class="screen-container">
+        
+        <section class="screen screen-map">
+          <div class="app-intro-card">
+            <h3>¿Qué hace SafeWalk?</h3>
+            <p>Es una solución móvil diseñada para velar por tu seguridad diaria en Lima, ayudándote a evitar incidentes callejeros a través de mapas informativos y navegación predictiva colectiva.</p>
+          </div>
+
+          <div class="m3-search-bar">
+            <i class="fa-solid fa-magnifying-glass" style="color: #43474e;"></i>
+            <input type="text" placeholder="Buscar calles o distritos..." />
+          </div>
+
+          <div class="m3-map">
+            <div class="m3-heat m3-danger"></div>
+          </div>
+
+          <div class="m3-card">
+            <h3><i class="fa-solid fa-map-location-dot"></i> Detección de Peligros</h3>
+            <p>Analiza y procesa mapas de calor interactivos basados en datos delictivos históricos y reportes ciudadanos en tiempo real para alertarte antes de entrar a zonas críticas.</p>
+          </div>
+        </section>
+
+        <section class="screen screen-routes">
+          <h3 class="m3-header" style="text-align: left; padding: 16px 16px 4px 16px;">Planificar Ruta</h3>
+          <input type="text" class="m3-input-field" value="📍 Origen: Mi ubicación (UPC)" readonly />
+          <input type="text" class="m3-input-field" placeholder="Introduce dirección de destino..." />
+          
+          <div class="m3-card">
+            <h3><i class="fa-solid fa-route"></i> Rutas Inteligentes</h3>
+            <p>Calcula caminos que priorizan factores de prevención, eligiendo vías con mejor infraestructura de alumbrado público, alto tránsito peatonal y cercanía a módulos de serenazgo.</p>
+          </div>
+        </section>
+
+        <section class="screen screen-alerts">
+          <h3 class="m3-header" style="text-align: left; padding: 16px 16px 4px 16px;">Notificaciones Comunitarias</h3>
+          
+          <div class="m3-card">
+            <h3><i class="fa-solid fa-bell"></i> Reportes en Tiempo Real</h3>
+            <p>Permite a la comunidad reportar incidentes al paso de manera inmediata (robos, acoso o falta de luminarias), notificando al instante a otros usuarios que transiten cerca.</p>
+          </div>
+        </section>
+
+        <section class="screen screen-profile">
+          <h3 class="m3-header">Ingresar a SafeWalk</h3>
+          
+          <p style="text-align: center; font-size: 14px; color: #43474e; margin: 0 32px 24px 32px; line-height: 1.4;">
+            Inicia sesión o regístrate para poder reportar incidentes, guardar rutas frecuentes y sincronizar tus contactos de confianza.
+          </p>
+
+          <input type="email" class="m3-input-field" placeholder="Correo electrónico corporativo o personal" required />
+          <input type="password" class="m3-input-field" placeholder="Contraseña" required />
+
+          <button class="m3-btn">Iniciar Sesión</button>
+          
+          <button class="m3-btn-text">¿No tienes una cuenta? Regístrate aquí</button>
+          
+          <div style="margin-top: 40px; text-align: center; opacity: 0.5; font-size: 11px; color: #1a1c1e;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 16px; display: block; margin-bottom: 6px; color: #005faf;"></i>
+            Conexión encriptada y protegida
+          </div>
+        </section>
+
+      </main>
+
+      <nav>
+        <label for="m3-tab-map" class="m3-nav-tab item-map">
+          <div class="pill-indicator">
+            <i class="fa-solid fa-map"></i>
+          </div>
+          <span>Mapa</span>
+        </label>
+        
+        <label for="m3-tab-routes" class="m3-nav-tab item-routes">
+          <div class="pill-indicator">
+            <i class="fa-solid fa-route"></i>
+          </div>
+          <span>Rutas</span>
+        </label>
+
+        <label for="m3-tab-alerts" class="m3-nav-tab item-alerts">
+          <div class="pill-indicator">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <span>Alertas</span>
+        </label>
+
+        <label for="m3-tab-profile" class="m3-nav-tab item-profile">
+          <div class="pill-indicator">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span>Perfil</span>
+        </label>
+      </nav>
+
+      <div class="android-gesture-bar">
+        <div class="gesture-pill"></div>
+      </div>
+    </div>
+  </body>
+</html>
