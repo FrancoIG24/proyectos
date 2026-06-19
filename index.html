@@ -101,6 +101,15 @@
         cursor: pointer;
       }
 
+      /* Logo en el header */
+      .nav-bar-logo {
+        height: 30px;
+        width: 30px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
       /* Título centrado y compacto de iOS */
       .ios-navigation-bar h2 {
         position: absolute;
@@ -386,9 +395,7 @@
       </div>
 
       <header class="ios-navigation-bar">
-        <span class="nav-bar-left"
-          ><i class="fa-solid fa-chevron-left"></i
-        ></span>
+        <div class="nav-bar-logo" style="background-image: url('Captura de pantalla 2026-06-18 224509.png')"></div>
         <h2>SafeWalk</h2>
         <button class="ios-header-action-btn">Pánico</button>
       </header>
